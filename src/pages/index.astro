@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts', ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true;
+});
+
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title="Miquel Arranz"
+  description="Software engineer and Tech Lead at Typeform, based in Barcelona. Writing about engineering, teams, and the craft of building software."
+>
+  <!-- Bio -->
+  <div style="margin-bottom:2.5rem;">
+    <h1 style="font-size:1.75rem;margin-bottom:0.75rem;letter-spacing:-0.02em;">Miquel Arranz</h1>
+    <p style="font-size:1.0625rem;line-height:1.7;color:var(--color-text);max-width:52ch;margin-bottom:0.4rem;">
+      I'm a software engineer based in Barcelona, currently working as Tech Lead at Typeform.
+    </p>
+    <p style="font-size:1.0625rem;line-height:1.7;color:var(--color-muted);max-width:52ch;">
+      Fair warning: an AI built this site. All the content and writing is on me, human generated.
+    </p>
+  </div>
+
+  <!-- Writing -->
+  <section style="margin-bottom:2.5rem;">
+    <h2 class="mono" style="font-size:0.6875rem;letter-spacing:0.09em;text-transform:uppercase;color:var(--color-muted);margin-bottom:0.875rem;padding:0;border:none;font-weight:500;">
+      Writing
+    </h2>
+    <PostList posts={posts} />
+  </section>
+
+  <!-- Now -->
+  <section>
+    <h2 class="mono" style="font-size:0.6875rem;letter-spacing:0.09em;text-transform:uppercase;color:var(--color-muted);margin-bottom:0.875rem;padding:0;border:none;font-weight:500;">
+      Now
+    </h2>
+    <p style="font-size:1.0625rem;line-height:1.7;color:var(--color-muted);max-width:52ch;">
+      Want to know what I'm actually focused on these days?{' '}
+      <a href="/now" style="color:var(--color-accent);text-decoration:underline;text-underline-offset:3px;text-decoration-color:color-mix(in srgb, var(--color-accent) 40%, transparent);">Here's what's on my plate right now.</a>
+    </p>
+  </section>
+</BaseLayout>

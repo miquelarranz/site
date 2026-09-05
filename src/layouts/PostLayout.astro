@@ -1,0 +1,82 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  slug: string;
+  body: string;
+}
+
+const { title, description, pubDate, updatedDate, slug, body } = Astro.props;
+
+// Reading time: ~200 words per minute
+const wordCount = body.trim().split(/\s+/).length;
+const minutes = Math.max(1, Math.round(wordCount / 200));
+
+// Prev / next
+const allPosts = await getCollection('posts', ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true;
+});
+const sorted = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const idx = sorted.findIndex((p) => p.id === slug);
+const prev = idx < sorted.length - 1 ? sorted[idx + 1] : null;
+const next = idx > 0 ? sorted[idx - 1] : null;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={`/og/${slug}.png`}
+  type="article"
+  pubDate={pubDate}
+>
+  <article>
+    <header style="margin-bottom:2.5rem;">
+      <h1 style="font-size:1.75rem;margin-bottom:0.75rem;">{title}</h1>
+      <div class="mono" style="display:flex;gap:1.25rem;color:var(--color-muted);font-size:0.8125rem;flex-wrap:wrap;align-items:baseline;">
+        <FormattedDate date={pubDate} format="long" />
+        <span>{minutes} min read</span>
+        {updatedDate && (
+          <span>Updated <FormattedDate date={updatedDate} format="long" /></span>
+        )}
+      </div>
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+
+  {(prev || next) && (
+    <nav
+      aria-label="Post navigation"
+      style="margin-top:4rem;padding-top:2rem;border-top:1px solid var(--color-rule);display:grid;grid-template-columns:1fr 1fr;gap:1rem;"
+    >
+      <div>
+        {prev && (
+          <>
+            <p class="mono" style="color:var(--color-muted);font-size:0.75rem;margin-bottom:0.25rem;">← Older</p>
+            <a href={`/writing/${prev.id}`} style="font-size:0.9375rem;line-height:1.4;">
+              {prev.data.title}
+            </a>
+          </>
+        )}
+      </div>
+      <div style="text-align:right;">
+        {next && (
+          <>
+            <p class="mono" style="color:var(--color-muted);font-size:0.75rem;margin-bottom:0.25rem;">Newer →</p>
+            <a href={`/writing/${next.id}`} style="font-size:0.9375rem;line-height:1.4;">
+              {next.data.title}
+            </a>
+          </>
+        )}
+      </div>
+    </nav>
+  )}
+</BaseLayout>

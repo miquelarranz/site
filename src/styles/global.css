@@ -1,0 +1,208 @@
+@import "tailwindcss";
+@import "@fontsource-variable/newsreader/index.css";
+
+/* ── Theme tokens ──────────────────────────────────────────── */
+:root {
+  --color-bg:     #f4f6f8;
+  --color-text:   #1a202c;
+  --color-muted:  #64748b;
+  --color-rule:   #e2e8f0;
+  --color-accent: #3b6ef7;
+}
+
+.dark {
+  --color-bg:     #0f1117;
+  --color-text:   #edf2f7;
+  --color-muted:  #94a3b8;
+  --color-rule:   #1e2533;
+  --color-accent: #6b8fff;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-bg:     var(--color-bg);
+  --color-text:   var(--color-text);
+  --color-muted:  var(--color-muted);
+  --color-rule:   var(--color-rule);
+  --color-accent: var(--color-accent);
+  --font-serif:   "Newsreader Variable", Georgia, "Times New Roman", serif;
+  --font-mono:    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 18px;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { transition: none; }
+}
+
+body {
+  font-family: var(--font-serif);
+  line-height: 1.7;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100dvh;
+}
+
+/* ── Layout ────────────────────────────────────────────────── */
+.container {
+  max-width: 68ch;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* ── Skip link ─────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  z-index: 9999;
+  background: var(--color-bg);
+  padding: 0.5rem 1rem;
+  outline: 2px solid var(--color-accent);
+  border-radius: 4px;
+}
+
+/* ── Typography ────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--color-text);
+  font-variation-settings: "wdth" 100;
+}
+
+h1 { font-size: 2rem; margin-block: 0 0.5rem; }
+h2 { font-size: 1.5rem; margin-block: 2.5rem 0.75rem; }
+h3 { font-size: 1.25rem; margin-block: 2rem 0.5rem; }
+
+p { margin-block: 0 1.25rem; }
+
+strong { font-weight: 600; }
+
+/* ── Links ─────────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--color-rule);
+  transition: text-decoration-color 0.12s, color 0.12s;
+}
+a:hover, a:focus-visible {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
+  outline: none;
+}
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Prose (post body) ─────────────────────────────────────── */
+.prose {
+  font-size: 1.0625rem;
+  line-height: 1.78;
+}
+
+.prose p { margin-block: 0 1.4rem; }
+.prose p:last-child { margin-bottom: 0; }
+
+.prose h2 {
+  font-size: 1.375rem;
+  margin-block: 2.75rem 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-rule);
+}
+
+.prose h3 {
+  font-size: 1.125rem;
+  margin-block: 2rem 0.5rem;
+}
+
+.prose ul, .prose ol {
+  padding-left: 1.5rem;
+  margin-block: 0 1.4rem;
+}
+.prose ul { list-style-type: disc; }
+.prose ol { list-style-type: decimal; }
+.prose li { margin-block: 0.3rem; }
+
+.prose blockquote {
+  margin-inline: 0;
+  padding-inline: 1.25rem;
+  border-left: 3px solid var(--color-rule);
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--color-rule);
+  margin-block: 2.5rem;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.prose code:not(pre code) {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: color-mix(in srgb, var(--color-rule) 60%, transparent);
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+}
+
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  border-radius: 6px;
+  border: 1px solid var(--color-rule);
+  margin-block: 0 1.4rem;
+}
+
+/* Shiki dual-theme */
+.prose .astro-code,
+.prose pre.shiki {
+  padding: 1.25rem 1.5rem;
+}
+.dark .prose .astro-code,
+.dark .prose pre.shiki {
+  /* shiki handles bg via inline style; keep border only */
+}
+
+/* ── Monospace meta (dates, tags, nav) ─────────────────────── */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts', ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true;
+});
+
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title="Writing"
+  description="All essays by Miquel Arranz — on software, teams, and building things that last."
+>
+  <h1 style="font-size:1.125rem;font-weight:400;color:var(--color-muted);margin-bottom:2.5rem;">All writing</h1>
+  <PostList posts={posts} />
+</BaseLayout>

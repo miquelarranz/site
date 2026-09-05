@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lastUpdated = new Date('2026-09-05');
+---
+
+<BaseLayout
+  title="Now"
+  description="What Miquel Arranz is doing now."
+>
+  <article class="prose">
+    <header style="margin-bottom:2rem;">
+      <h1>Now</h1>
+      <p class="mono" style="color:var(--color-muted);font-size:0.8125rem;margin:0;">
+        Updated {lastUpdated.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
+        · <a href="https://nownownow.com/about" rel="noopener noreferrer" target="_blank" style="color:inherit;">what is this?</a>
+      </p>
+    </header>
+
+    <h2>Work</h2>
+    <p>My role recently changed to Tech Lead, so I'm focused on getting up to speed quickly without pretending I already know everything:</p>
+    <ul>
+      <li>Getting a clear picture of current technical debt and where the biggest pain points are</li>
+      <li>Understanding ongoing initiatives and any hidden risks before they turn into surprises</li>
+      <li>Aligning as a team on coding and quality standards, with a specific focus on how we use AI effectively</li>
+    </ul>
+
+    <h2>Life</h2>
+    <p>Training for a half marathon in Benidorm, Spain, this year. Getting in shape for it is currently the non-work thing I spend the most energy on.</p>
+    <p>I also spend some time doing ceramics. I may show some of it publicly in the near future.</p>
+
+    <h2>Reading</h2>
+    <ul>
+      <li><em>Staff Engineer</em> by Will Larson</li>
+      <li><em>Golden Son</em> by Pierce Brown</li>
+    </ul>
+  </article>
+</BaseLayout>
