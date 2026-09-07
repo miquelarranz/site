@@ -6,11 +6,12 @@ interface Props {
 
 const { date, format = 'short' } = Astro.props;
 
-const formatted = date.toLocaleDateString('en-GB', {
-  year: format === 'long' ? 'numeric' : undefined,
-  month: 'short',
-  day: 'numeric',
-});
+const year = date.getFullYear();
+const dayMonth = date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+
+const formatted = format === 'short'
+  ? `${year} – ${dayMonth}`
+  : date.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
 
 const iso = date.toISOString();
 ---
